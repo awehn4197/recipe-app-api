@@ -14,6 +14,7 @@ from recipe.serializers import TagSerializer
 
 TAGS_URL = reverse('recipe:tag-list')
 
+
 def detail_url(tag_id):
     """Create and return a tag detail url"""
     return reverse('recipe:tag-detail', args=[tag_id])
@@ -82,7 +83,6 @@ class PrivateTagsApiTests(TestCase):
         tag.refresh_from_db()
         self.assertEqual(tag.name, payload['name'])
 
-
     def test_cannot_update_someone_elses_tag(self):
         user2 = create_user(email='user2@example.com')
         tag = Tag.objects.create(user=user2, name='After Dinner')
@@ -94,7 +94,6 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         tag.refresh_from_db()
         self.assertEqual(tag.name, 'After Dinner')
-
 
         client2 = APIClient()
         client2.force_authenticate(user2)
